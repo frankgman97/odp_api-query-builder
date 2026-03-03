@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+@plugin 'daisyui' {
+  themes: light --default, dark;
+}
+
+/* Compact sidepanel overrides */
+body {
+  font-size: 13px;
+  overflow-x: hidden;
+}
+
+/* Smoother scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(var(--bc) / 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(var(--bc) / 0.25);
+}
