@@ -1,6 +1,6 @@
 # ODP API Query Builder
 
-A Chrome extension that helps you build structured Lucene queries for the [USPTO Open Data Portal (ODP)](https://developer.uspto.gov/api-catalog/open-data-portal) patent search API — without memorizing field paths or syntax.
+A Chrome extension that helps you build structured Lucene queries for the [USPTO Open Data Portal (ODP)](https://data.uspto.gov/patent-file-wrapper/search) patent search API — without memorizing field paths or syntax.
 
 ## Features
 

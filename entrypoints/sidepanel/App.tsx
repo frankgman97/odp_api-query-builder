@@ -13,7 +13,7 @@ type Tab = 'visual' | 'ai' | 'raw' | 'saved';
 
 function App() {
   const [state, dispatch] = useQueryReducer();
-  const [activeTab, setActiveTab] = useState<Tab>('visual');
+  const [activeTab, setActiveTab] = useState<Tab>('ai');
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [saveName, setSaveName] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -63,10 +63,10 @@ function App() {
         <div className="px-3 mt-1">
           <div className="flex bg-base-200/60 rounded-lg p-0.5 gap-0.5">
             {([
-              { id: 'visual' as Tab, label: 'Builder' },
               { id: 'ai' as Tab, label: 'AI' },
-              { id: 'raw' as Tab, label: 'Raw' },
+              { id: 'visual' as Tab, label: 'Builder' },
               { id: 'saved' as Tab, label: 'Saved' },
+              { id: 'raw' as Tab, label: 'Raw' },
             ]).map((tab) => (
               <button
                 key={tab.id}
@@ -82,11 +82,6 @@ function App() {
                 {tab.id === 'saved' && savedQueries.queries.length > 0 && (
                   <span className="ml-1 text-[10px] bg-primary/15 text-primary rounded-full px-1.5 py-0.5 font-semibold">
                     {savedQueries.queries.length}
-                  </span>
-                )}
-                {tab.id === 'ai' && (
-                  <span className="ml-1 text-[10px] bg-primary/15 text-primary rounded-full px-1 py-0.5 font-semibold">
-                    NEW
                   </span>
                 )}
               </button>

@@ -22,7 +22,7 @@ const SETTINGS_KEY = 'ipos_llm_settings';
 const DEFAULT_SETTINGS: LLMSettings = {
   provider: 'anthropic',
   apiKey: '',
-  model: 'claude-sonnet-4-20250514',
+  model: 'claude-opus-4-6',
 };
 
 function hasBrowserStorage(): boolean {

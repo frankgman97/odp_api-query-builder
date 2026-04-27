@@ -41,6 +41,7 @@ type Action =
   | { type: 'ADD_GROUP'; parentGroupId: string; operator: BooleanOperator }
   | { type: 'REMOVE_GROUP'; groupId: string }
   | { type: 'SET_GROUP_OPERATOR'; groupId: string; operator: BooleanOperator }
+  | { type: 'MOVE_CHILD'; groupId: string; fromIndex: number; toIndex: number }
   | { type: 'SET_RAW_QUERY'; rawQuery: string }
   | { type: 'SYNC_FROM_RAW' }
   | { type: 'LOAD_AST'; ast: QueryAST; rawQuery: string }
@@ -127,6 +128,22 @@ function addGroupToGroup(group: ConditionGroup, parentGroupId: string, operator:
   };
 }
 
+/** Recursively reorder children within a group by ID */
+function moveChildInGroup(group: ConditionGroup, groupId: string, fromIndex: number, toIndex: number): ConditionGroup {
+  if (group.id === groupId) {
+    const children = [...group.children];
+    const [moved] = children.splice(fromIndex, 1);
+    children.splice(toIndex, 0, moved);
+    return { ...group, children };
+  }
+  return {
+    ...group,
+    children: group.children.map((child) =>
+      child.kind === 'group' ? moveChildInGroup(child, groupId, fromIndex, toIndex) : child,
+    ),
+  };
+}
+
 /** Recursively set the boolean operator of a group by ID */
 function setGroupOperator(group: ConditionGroup, groupId: string, operator: BooleanOperator): ConditionGroup {
   if (group.id === groupId) {
@@ -174,6 +191,11 @@ function queryReducer(state: QueryState, action: Action): QueryState {
 
     case 'SET_GROUP_OPERATOR': {
       const ast = setGroupOperator(state.ast, action.groupId, action.operator);
+      return { ...state, ast, rawQuery: generateLuceneQuery(ast), rawEditorDirty: false };
+    }
+
+    case 'MOVE_CHILD': {
+      const ast = moveChildInGroup(state.ast, action.groupId, action.fromIndex, action.toIndex);
       return { ...state, ast, rawQuery: generateLuceneQuery(ast), rawEditorDirty: false };
     }
 

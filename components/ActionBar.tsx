@@ -28,7 +28,7 @@ export function ActionBar({ onSave }: ActionBarProps) {
   }, [state.rawQuery]);
 
   const handleOpenODP = useCallback(() => {
-    window.open('https://developer.uspto.gov/api-catalog/open-data-portal', '_blank');
+    window.open('https://data.uspto.gov/patent-file-wrapper/search', '_blank');
   }, []);
 
   const handleClear = useCallback(() => {

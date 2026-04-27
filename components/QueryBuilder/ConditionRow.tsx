@@ -9,6 +9,20 @@ interface ConditionRowProps {
   condition: Condition;
 }
 
+/** Color based on field type */
+function getTypeColor(type: string | undefined) {
+  switch (type) {
+    case 'date':
+      return 'border-l-warning';
+    case 'number':
+      return 'border-l-info';
+    case 'boolean':
+      return 'border-l-success';
+    default:
+      return 'border-l-primary';
+  }
+}
+
 export function ConditionRow({ condition }: ConditionRowProps) {
   const { dispatch } = useQueryState();
   const field = condition.fieldPath ? getFieldByPath(condition.fieldPath) : undefined;
@@ -45,12 +59,19 @@ export function ConditionRow({ condition }: ConditionRowProps) {
     dispatch({ type: 'REMOVE_CONDITION', conditionId: condition.id });
   }
 
+  const typeColor = getTypeColor(field?.type);
+  const isComplete = condition.fieldPath && condition.value;
+
   return (
-    <div className="bg-base-200/40 rounded-lg p-2 space-y-1.5 group relative">
+    <div
+      className={`border-l-3 ${typeColor} bg-base-200/40 rounded-r-lg p-2.5 space-y-1.5 group/row relative transition-all hover:bg-base-200/60 ${
+        isComplete ? '' : 'border-dashed'
+      }`}
+    >
       {/* Remove button */}
       <button
         type="button"
-        className="absolute top-1.5 right-1.5 btn btn-xs btn-ghost btn-square text-base-content/30 hover:text-error opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-1.5 right-1.5 btn btn-xs btn-ghost btn-square text-base-content/20 hover:text-error opacity-0 group-hover/row:opacity-100 transition-opacity"
         onClick={handleRemove}
         title="Remove condition"
       >
@@ -58,6 +79,21 @@ export function ConditionRow({ condition }: ConditionRowProps) {
           <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
         </svg>
       </button>
+
+      {/* Field type badge */}
+      {field && (
+        <div className="flex items-center gap-1.5 mb-0.5">
+          <span className="text-[9px] uppercase tracking-wider font-bold text-base-content/25">
+            {field.type}
+          </span>
+          {field.section && (
+            <>
+              <span className="text-base-content/15">|</span>
+              <span className="text-[9px] text-base-content/20 truncate">{field.section}</span>
+            </>
+          )}
+        </div>
+      )}
 
       {/* Field selector - full width */}
       <FieldSelector value={condition.fieldPath} onChange={handleFieldChange} />

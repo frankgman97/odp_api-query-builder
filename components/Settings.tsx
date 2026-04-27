@@ -8,6 +8,8 @@ interface SettingsProps {
 }
 
 const ANTHROPIC_MODELS = [
+  { value: 'claude-opus-4-6', label: 'Claude Opus 4.6' },
+  { value: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6' },
   { value: 'claude-sonnet-4-20250514', label: 'Claude Sonnet 4' },
   { value: 'claude-haiku-4-20250414', label: 'Claude Haiku 4' },
 ];
@@ -23,7 +25,7 @@ export function Settings({ open, onClose }: SettingsProps) {
   const [settings, setSettings] = useState<LLMSettings>({
     provider: 'anthropic',
     apiKey: '',
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-opus-4-6',
   });
   const [saved, setSaved] = useState(false);
   const [showKey, setShowKey] = useState(false);
@@ -43,7 +45,7 @@ export function Settings({ open, onClose }: SettingsProps) {
   }
 
   function handleProviderChange(provider: LLMProvider) {
-    const model = provider === 'anthropic' ? 'claude-sonnet-4-20250514' : 'gpt-4o-mini';
+    const model = provider === 'anthropic' ? 'claude-opus-4-6' : 'gpt-4o-mini';
     setSettings({ ...settings, provider, model });
   }
 
